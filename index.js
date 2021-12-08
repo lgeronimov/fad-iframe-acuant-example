@@ -42,18 +42,30 @@ class ResponseEvent {
 // subscribe to message event to recive the events from the iframe
 window.addEventListener("message", (message) => {
   // IMPORTANT: check the origin of the data
-  if (message.origin.includes("firmaautografa.com")) {
+  // if (message.origin.includes("firmaautografa.com")) {
     if (message.data.event === EVENT_MODULE.PROCESS_INIT) {
       // only informative
       console.log("Process init");
     } else if (message.data.event === EVENT_MODULE.PROCESS_ERROR) {
       // restart component and send error
-      console.log("Unespected error:" + JSON.stringify(message.data.data));
+      alert(JSON.stringify(message.data.data));
     } else if (message.data.event === EVENT_MODULE.PROCESS_COMPLETED) {
-      // end of the process
+      // show result
+      const containerResult = document.getElementById('container-result');
+      const containerIframe = document.getElementById('container-iframe-acuant');
+      const imageId = document.getElementById('image-id');
+      const imageFace = document.getElementById('image-face');
+      const ocr = document.getElementById('ocr');
+      
+      containerIframe.style.display = 'none';
+      containerResult.style.display = 'flex';
+      imageId.src = message.data.data.id.image.data;
+      imageFace.src = message.data.data.idPhoto;
+      ocr.innerHTML = JSON.stringify(message.data.data.idData.ocr);
+      
       console.log("Process completed");
     }
-  } else return;
+  // } else return;
 });
 
 
