@@ -1,4 +1,3 @@
-
 html,
 body {
   height: 100%;
@@ -6,7 +5,7 @@ body {
   margin: 0;
 }
 
-.container-iframe, #fad-iframe {
+.container-iframe-acuant, #fad-iframe-acuant {
   width: 100%;
   height: 100%;
 }

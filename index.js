@@ -2,44 +2,79 @@ window.onload = function () {
   initIframe();
 };
 
-  // subscribe to message event to recive the events from the iframe
-  window.addEventListener("message", (message) => {
-    // IMPORTANT: check the origin of the data!
-    if (message.origin.includes("firmaautografa.com")) {
-      if (message.data.event === "PROCESS_INIT") {
-        // only informative
-        console.log("Process init");
-      } else if (message.data.event === "PROCESS_ERROR") {
-        // restart component and send error
-        console.log("Unespected error:" + JSON.stringify(message.data.data));
-      } else if (message.data.event === "PROCESS_COMPLETED") {
-        // end of the process
-        console.log("Process completed");
-      } else if (message.data.event === "ENTRY_PATH") {
-        // show current path
-        console.log("Current path: " + message.data.data);
-      }
-    } else return;
-  });
+const EVENT_MODULE = {
+  PROCESS_INIT: "INIT_MODULE",
+  PROCESS_ERROR: "PROCESS_ERROR",
+  PROCESS_COMPLETED: "PROCESS_COMPLETED",
+}
 
+const CREDENTIALS = {
+  passiveUsername: 'Acuant_Admin_PROD@na-at.com.mx',
+  passivePassword: 'R3Z^gm^6C^YNM^vQ',
+  passiveSubscriptionId: '3d0a5941-4528-475c-a8ce-15e8f3bca0df',
+  acasEndpoint: "https://us.acas.acuant.net",
+  livenessEndpoint:"https://us.passlive.acuant.net",
+  assureidEndpoint: "https://services.assureid.net"
+}
 
-
-window.onload = function () {
-  initIframe();
+const LEGENDS = {
+  initializing: 'iniciando1',
+  processing: 'procesando1',
+  scan: {
+    none: 'ENFOCA TU ID SOBRE LA GUÍA1',
+    smallDocument: 'ACERCATE MÁS1',
+    goodDocument: null,
+    capturing: 'CAPTURANDO',
+    tapToCapture: 'TOCA LA PANTALLA PARA CAPTURAR',
+  },
 };
+
+
+class ResponseEvent {
+  event;
+  data;
+  constructor(event, data) {
+    this.event = event;
+    this.data = data;
+  }
+}
+
+// subscribe to message event to recive the events from the iframe
+window.addEventListener("message", (message) => {
+  // IMPORTANT: check the origin of the data
+  if (message.origin.includes("firmaautografa.com")) {
+    if (message.data.event === EVENT_MODULE.PROCESS_INIT) {
+      // only informative
+      console.log("Process init");
+    } else if (message.data.event === EVENT_MODULE.PROCESS_ERROR) {
+      // restart component and send error
+      console.log("Unespected error:" + JSON.stringify(message.data.data));
+    } else if (message.data.event === EVENT_MODULE.PROCESS_COMPLETED) {
+      // end of the process
+      console.log("Process completed");
+    }
+  } else return;
+});
+
 
 function initIframe() {
   // get iframe 
-  const iframe = document.getElementById("fad-iframe");
-  // ticket is the id of the process
-  const ticket = '0bf87f4de9d99772167e3f015745a5d777795614e27e5eafeed6d464bd7c935ed467792cea0f6eacc8ec4e9418cc4257'
+  const iframe = document.getElementById('fad-iframe-acuant');
   // url of fad, uat - uatwebfad4.firmaautografa.com, prod - mobile.firmaautografa.com
-  const url = 'https://uatwebfad4.firmaautografa.com/main?ticket='
+  const url = 'https://192.168.0.16:4300';
   // set src to iframe
-  iframe.src = url + ticket;
-  // show loader - optional
+  iframe.src = url;
+  // send credentials to iframe
   iframe.onload = () => {
-    // hide loader - optional
+    iframe.contentWindow.postMessage(new ResponseEvent(EVENT_MODULE.PROCESS_INIT, {
+      credentials: CREDENTIALS,
+      legends: LEGENDS,
+      side: 0, // 0 - front id, 1 - back id
+      idPhoto: true, // true - get imaghen face of id, false - nothing
+      idData: true, // true - ocr, false - nothing
+      imageQuality: 1 // quality of image id, range 0 - 1
+    }
+  ), iframe.src);
   };
 }
 
