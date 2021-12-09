@@ -15,4 +15,6 @@ body {
   flex-direction: column;
   font-family: system-ui;
   margin: 5%;
+  max-width: 100%;
+  word-break: break-all;
 }

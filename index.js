@@ -2,31 +2,39 @@ window.onload = function () {
   initIframe();
 };
 
+// events available
 const EVENT_MODULE = {
   PROCESS_INIT: "INIT_MODULE",
   PROCESS_ERROR: "PROCESS_ERROR",
   PROCESS_COMPLETED: "PROCESS_COMPLETED",
 }
 
+// acuant credentials 
 const CREDENTIALS = {
-  passiveUsername: 'Acuant_Admin_PROD@na-at.com.mx',
-  passivePassword: 'R3Z^gm^6C^YNM^vQ',
-  passiveSubscriptionId: '3d0a5941-4528-475c-a8ce-15e8f3bca0df',
-  acasEndpoint: "https://us.acas.acuant.net",
-  livenessEndpoint:"https://us.passlive.acuant.net",
-  assureidEndpoint: "https://services.assureid.net"
+  passiveUsername: 'acuantEUUser@naat.com',
+  passivePassword: 'Q^59zWJzZ^jZrw^q',
+  passiveSubscriptionId: 'c681321c-2728-4e8a-a3df-a85ba8a11748',
+  acasEndpoint: "https://eu.acas.acuant.net",
+  assureidEndpoint: "https://eu.assureid.acuant.net"
 }
 
+
+
+// legends of module
 const LEGENDS = {
-  initializing: 'iniciando1',
-  processing: 'procesando1',
+  initializing: 'iniciando',
+  processing: 'procesando',
   scan: {
-    none: 'ENFOCA TU ID SOBRE LA GUÍA1',
-    smallDocument: 'ACERCATE MÁS1',
-    goodDocument: null,
-    capturing: 'CAPTURANDO',
+    none: 'ENFOCA TU ID SOBRE LA GUÍA',
+    smallDocument: 'ACERCATE MÁS',
+    goodDocument: '',
+    capturing: 'CAPTURANDO ',
     tapToCapture: 'TOCA LA PANTALLA PARA CAPTURAR',
   },
+  manualCapture: {
+    instruction: 'Captura el frente de tu identificación',
+    buttonNext: 'Continuar'
+  }
 };
 
 
@@ -73,7 +81,7 @@ function initIframe() {
   // get iframe 
   const iframe = document.getElementById('fad-iframe-acuant');
   // url of fad, uat - uatwebfad4.firmaautografa.com, prod - mobile.firmaautografa.com
-  const url = 'https://192.168.0.16:4300';
+  const url = 'https://192.168.100.7:4300';
   // set src to iframe
   iframe.src = url;
   // send credentials to iframe
