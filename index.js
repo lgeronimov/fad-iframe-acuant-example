@@ -91,14 +91,11 @@ window.addEventListener("message", (message) => {
       console.log("Process completed");
       // use the results as you see fit 
       console.log(message.data.data);
+      
+      // save image back
+      sessionStorage.setItem('idBack', message.data.data.id.image.data);
+      
       // show result example
-
-      // save documentInstance if is front image
-      sessionStorage.setItem('documentInstance', message.data.data.documentInstance);
-
-      // save image front
-      sessionStorage.setItem('idFront', message.data.data.id.image.data);
-
       const containerResult = document.getElementById('container-result');
       const containerIframe = document.getElementById('container-iframe-acuant');
       const imageId = document.getElementById('image-id');
@@ -129,10 +126,11 @@ function initIframe() {
       new ResponseEvent(EVENT_MODULE.INIT_MODULE, {
         credentials: CREDENTIALS,
         legends: LEGENDS,
-        side: 0, // 0 - front id, 1 - back id
-        idData: false, // true - ocr, false - without this data
-        idPhoto: false, // true - get imaghen face of id, false - without this data
+        side: 1, 
+        idData: true, 
+        idPhoto: true, // true - get imaghen face of id, false - without this data
         imageQuality: 0.5, // quality of image id, range 0 - 1
+        documentInstance: sessionStorage.getItem('documentInstance') // instance obtained in the front image
       }), iframe.src);
   };
 }
