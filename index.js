@@ -93,7 +93,7 @@ window.addEventListener("message", (message) => {
       console.log(message.data.data);
       // show result example
 
-      // save documentInstance if is front image
+      // save documentInstance, is very important set this parameter in configuration to back image
       sessionStorage.setItem('documentInstance', message.data.data.documentInstance);
 
       // save image front
@@ -102,15 +102,11 @@ window.addEventListener("message", (message) => {
       const containerResult = document.getElementById('container-result');
       const containerIframe = document.getElementById('container-iframe-acuant');
       const imageId = document.getElementById('image-id');
-      const imageFace = document.getElementById('image-face');
       const imageSharpness = document.getElementById('image-sharpness');
-      const ocr = document.getElementById('ocr');
       containerIframe.style.display = 'none';
       containerResult.style.display = 'flex';
       imageId.src = message.data.data.id.image.data;
       imageSharpness.innerHTML = message.data.data.id.sharpness;
-      imageFace.src = message.data.data.idPhoto;
-      ocr.innerHTML = JSON.stringify(message.data.data.idData.ocr);
     }
   } else return;
 });
@@ -129,9 +125,9 @@ function initIframe() {
       new ResponseEvent(EVENT_MODULE.INIT_MODULE, {
         credentials: CREDENTIALS,
         legends: LEGENDS,
-        side: 0, // 0 - front id, 1 - back id
-        idData: false, // true - ocr, false - without this data
-        idPhoto: false, // true - get imaghen face of id, false - without this data
+        side: 0, 
+        idData: false, 
+        idPhoto: false, 
         imageQuality: 0.5, // quality of image id, range 0 - 1
       }), iframe.src);
   };
