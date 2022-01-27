@@ -94,6 +94,17 @@ window.addEventListener("message", (message) => {
       
       // save image back
       sessionStorage.setItem('idBack', message.data.data.id.image.data);
+
+      // set idetentificatioData
+      const identificationData = {
+        documentNumber: message.data.data.idData.ocr.documentNumber,
+        backNumber: message.data.data.idData.ocr.backNumber,
+        personalNumber: message.data.data.idData.ocr.personalNumber,
+        verificationNumber: message.data.data.idData.ocr.verificationNumber
+      };
+
+      // set idetentificatioData
+      sessionStorage.setItem('identificationData', JSON.stringify(identificationData));      
       
       // show result example
       const containerResult = document.getElementById('container-result');
