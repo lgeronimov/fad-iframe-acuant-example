@@ -106,6 +106,8 @@ window.addEventListener("message", (message) => {
       // set idetentificatioData
       sessionStorage.setItem('identificationData', JSON.stringify(identificationData));      
       
+      console.log(JSON.parse(sessionStorage.getItem('identificationData')));
+
       // show result example
       const containerResult = document.getElementById('container-result');
       const containerIframe = document.getElementById('container-iframe-acuant');
