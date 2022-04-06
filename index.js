@@ -1,4 +1,4 @@
-window.onload = function () {
+window.onload = function() {
   initIframe();
 };
 
@@ -13,11 +13,12 @@ const EVENT_MODULE = {
 
 // acuant credentials
 const CREDENTIALS = {
-  passiveUsername: "acuantEUUser@naat.com",
-  passivePassword: "Q^59zWJzZ^jZrw^q",
-  passiveSubscriptionId: "c681321c-2728-4e8a-a3df-a85ba8a11748",
-  acasEndpoint: "https://eu.acas.acuant.net",
-  assureidEndpoint: "https://eu.assureid.acuant.net",
+  passiveUsername: 'XXXXXXXXXXXXXXXXXXXXXXXXX',
+  passivePassword: 'XXXXXXXXXXXXXXXXXXXXXXXXX',
+  passiveSubscriptionId: 'XXXXXXXXXXXXXXXXXXXXXXXXX',
+  acasEndpoint: 'XXXXXXXXXXXXXXXXXXXXXXXXX',
+  livenessEndpoint: 'XXXXXXXXXXXXXXXXXXXXXXXXX',
+  assureidEndpoint: 'XXXXXXXXXXXXXXXXXXXXXXXXX'
 };
 
 // optional, the app has default legends and colors
@@ -81,6 +82,11 @@ class Result {
   id; // image of identification (image.data) and relevant information (sharpness, glare)
   idData; // ocr idData.ocr;
   idPhoto; // image of the face cutout
+  constructor(data) {
+    this.id = data.id;
+    this.idData = data.idData;
+    this.idPhoto = data.idPhoto;
+  }
 }
 
 // subscribe to message event to recive the events from the iframe
@@ -114,12 +120,6 @@ window.addEventListener("message", (message) => {
       console.log(message.data.data);
       // show result example
 
-      // save documentInstance if is front image
-      sessionStorage.setItem(
-        "documentInstance",
-        message.data.data.documentInstance
-      );
-
       // save image front
       sessionStorage.setItem("idFront", message.data.data.id.image.data);
 
@@ -129,14 +129,13 @@ window.addEventListener("message", (message) => {
       );
       const imageId = document.getElementById("image-id");
       const imageFace = document.getElementById("image-face");
-      const imageSharpness = document.getElementById("image-sharpness");
       const ocr = document.getElementById("ocr");
       containerIframe.style.display = "none";
       containerResult.style.display = "flex";
-      imageId.src = message.data.data.id.image.data;
-      imageSharpness.innerHTML = message.data.data.id.sharpness;
-      imageFace.src = message.data.data.idPhoto;
-      ocr.innerHTML = JSON.stringify(message.data.data.idData.ocr);
+      const result = new Result(message.data.data);
+      imageId.src = result.id.image.data;
+      imageFace.src = result.idPhoto;
+      ocr.innerHTML = JSON.stringify(result.idData.ocr);
     }
   } else return;
 });
@@ -144,13 +143,14 @@ window.addEventListener("message", (message) => {
 function initIframe() {
   // get iframe
   const iframe = document.getElementById("fad-iframe-acuant");
-  // url - https://apiiduat.firmaautografa.com/
+  // url - https://devapiframe.firmaautografa.com/fad-iframe-acuant
   const username = "example@email.com";
   const password = "password";
-  const url = `https://localhost:4200/fad-iframe-facetec?user=${username}&pwd=${password}`;
+  const url = `https://devapiframe.firmaautografa.com/fad-iframe-acuant?user=${username}&pwd=${password}`;
   // set src to iframe
   iframe.src = url;
 }
+
 function initModule() {
   const iframe = document.getElementById("fad-iframe-acuant");
   iframe.contentWindow.postMessage(
@@ -158,8 +158,8 @@ function initModule() {
       credentials: CREDENTIALS,
       customization: CUSTOMIZATION,
       side: 0, // 0 - front id, 1 - back id
-      idData: false, // true - ocr, false - without this data
-      idPhoto: false, // true - get imaghen face of id, false - without this data
+      idData: true, // true - ocr, false - without this data
+      idPhoto: true, // true - get imaghen face of id, false - without this data
       imageQuality: 0.5, // quality of image id, range 0 - 1
     }),
     iframe.src
