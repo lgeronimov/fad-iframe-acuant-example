@@ -88,6 +88,7 @@ const CONFIGURATION = {
         title: 'Identificación',
         subtitle: 'Captura tu identifcación',
         buttonNext: 'Continuar',
+        instructions: 'Recuerda no hacer uso de lentes de sol, gorras u otros elementos que dificulten la identificación de tu rostro.'
       },
       legendsPreview: {
         title: 'Identificación',
