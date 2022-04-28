@@ -1,4 +1,4 @@
-window.onload = function() {
+window.onload = function () {
   initIframe();
 };
 
@@ -22,37 +22,87 @@ const CREDENTIALS = {
 };
 
 // optional, the app has default legends and colors
-const CUSTOMIZATION = {
-  fadCustomization: {
-    buttons: {
-      primary: {
-        backgroundColor: "#A70635",
-        backgroundColorDisabled: "#dcdcdc",
-        labelColor: "#ffffff",
-        labelColorDisabled: "#8e8e8e",
-        border: "1px solid #A70635",
-      },
-    },
+const CONFIGURATION = {
+  views: {
+    instructions: true,
+    preview: false
   },
+  customization: {
+    fadCustomization: {
+      colors: {
+        primary: "#A70635",
+        secondary: "#A70635",
+        tertiary: "#363636",
+      },
+      buttons: {
+        primary: {
+          backgroundColor: "#A70635",
+          backgroundColorDisabled: "#dcdcdc",
+          labelColor: "#ffffff",
+          labelColorDisabled: "#8e8e8e",
+          border: "1px solid #A70635",
+        },
+      },
+      fonts: {
+        title: {
+          fontSize: '25px',
+          fontFamily: 'system-ui'
+        },
+        subtitle: {
+          fontSize: '17px',
+          fontFamily: 'system-ui'
+        },
+        content: {
+          fontSize: '15px',
+          fontFamily: 'system-ui'
+        },
+        informative: {
+          fontSize: '12px',
+          fontFamily: 'system-ui'
+        },
+        button: {
+          fontSize: '17px',
+          fontFamily: 'system-ui'
+        }
+      }
+    },
 
-  moduleCustomization: {
-    legends: {
-      initializing: "iniciando",
-      processing: "procesando",
-      scan: {
-        none: "ENFOCA TU ID SOBRE LA GUÍA",
-        smallDocument: "ACERCATE MÁS",
-        goodDocument: "",
-        capturing: "CAPTURANDO ",
-        tapToCapture: "TOCA LA PANTALLA PARA CAPTURAR",
+    moduleCustomization: {
+      legends: {
+        initializing: "iniciando",
+        processing: "procesando",
+        scan: {
+          none: "ENFOCA TU ID SOBRE LA GUÍA",
+          smallDocument: "ACERCATE MÁS",
+          goodDocument: "",
+          capturing: "CAPTURANDO ",
+          tapToCapture: "TOCA LA PANTALLA PARA CAPTURAR",
+        },
+        manualCapture: {
+          instruction: "Captura el frente de tu identificación",
+          buttonNext: "Continuar",
+        },
+
       },
-      manualCapture: {
-        instruction: "Captura el frente de tu identificación",
-        buttonNext: "Continuar",
+      legendsInstructions: {
+        title: 'Identificación',
+        subtitle: 'Captura tu identifcación',
+        buttonNext: 'Continuar',
       },
-    },
+      legendsPreview: {
+        title: 'Identificación',
+        subtitle: 'Imagen de tu identificación',
+        confirmation: '¿Los datos de tu identificación son legibles?',
+        buttonNext: 'Sí, continuar',
+        buttonRetry: 'Volver a capturar'
+      }
+    }
   },
+  pathDependencies: {
+    imageDirectory: 'ASSETS_URL'
+  }
 };
+
 // errors
 const ERROR_CODE = {
   REQUIRED_CREDENTIAL: -1,
@@ -156,8 +206,8 @@ function initModule() {
   iframe.contentWindow.postMessage(
     new ResponseEvent(EVENT_MODULE.INIT_MODULE, {
       credentials: CREDENTIALS,
-      customization: CUSTOMIZATION,
-      side: 0, // 0 - front id, 1 - back id
+      configuration: CONFIGURATION,
+      side: 1, // 0 - front id, 1 - back id
       idData: true, // true - ocr, false - without this data
       idPhoto: true, // true - get imaghen face of id, false - without this data
       imageQuality: 0.5, // quality of image id, range 0 - 1
