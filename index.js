@@ -207,8 +207,8 @@ function initModule() {
       credentials: CREDENTIALS,
       configuration: CONFIGURATION,
       side: 0, // 0 - front id, 1 - back id
-      idData: true, // true - ocr, false - without this data
-      idPhoto: true, // true - get imaghen face of id, false - without this data
+      idData: false, // true - ocr, false - without this data
+      idPhoto: false, // true - get imaghen face of id, false - without this data
       imageQuality: 0.5, // quality of image id, range 0 - 1
     }), iframe.src);
 }
