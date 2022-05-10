@@ -176,15 +176,11 @@ window.addEventListener("message", (message) => {
 
       const containerResult = document.getElementById("container-result");
       const containerIframe = document.getElementById("container-iframe-acuant");
-      const imageId = document.getElementById("image-id");
-      const imageFace = document.getElementById("image-face");
-      const ocr = document.getElementById("ocr");
+      const imageId = document.getElementById("image-id");;
       containerIframe.style.display = "none";
       containerResult.style.display = "flex";
       const result = new Result(message.data.data);
       imageId.src = result.id.image.data;
-      imageFace.src = result.idPhoto;
-      ocr.innerHTML = JSON.stringify(result.idData.ocr);
     }
   } else return;
 });
