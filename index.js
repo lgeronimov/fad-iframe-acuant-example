@@ -24,7 +24,7 @@ const CREDENTIALS = {
 // optional, the app has default legends and colors
 const CONFIGURATION = {
   views: {
-    instructions: true,
+    instructions: false,
     preview: true
   },
   customization: {
@@ -87,8 +87,7 @@ const CONFIGURATION = {
       legendsInstructions: {
         title: 'Identificación',
         subtitle: 'Captura tu identifcación',
-        buttonNext: 'Continuar',
-        instructions: 'Recuerda no hacer uso de lentes de sol, gorras u otros elementos que dificulten la identificación de tu rostro.'
+        buttonNext: 'Continuar'
       },
       legendsPreview: {
         title: 'Identificación',
@@ -100,7 +99,7 @@ const CONFIGURATION = {
     }
   },
   pathDependencies: {
-    imageDirectory: 'ASSETS_URL'
+    // imageDirectory: 'ASSETS_URL'
   }
 };
 
