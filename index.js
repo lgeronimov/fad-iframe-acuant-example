@@ -13,12 +13,12 @@ const EVENT_MODULE = {
 
 // acuant credentials
 const CREDENTIALS = {
-  passiveUsername: 'Acuant_Admin_PROD@na-at.com.mx',
-  passivePassword: 'R3Z^gm^6C^YNM^vQ',
-  passiveSubscriptionId: '3d0a5941-4528-475c-a8ce-15e8f3bca0df',
-  acasEndpoint: 'https://us.acas.acuant.net',
-  livenessEndpoint: 'https://us.passlive.acuant.net',
-  assureidEndpoint: 'https://services.assureid.net'
+  passiveUsername: 'XXXXXXXXXXXXXXXXXXXXXXXXX',
+  passivePassword: 'XXXXXXXXXXXXXXXXXXXXXXXXX',
+  passiveSubscriptionId: 'XXXXXXXXXXXXXXXXXXXXXXXXX',
+  acasEndpoint: 'XXXXXXXXXXXXXXXXXXXXXXXXX',
+  livenessEndpoint: 'XXXXXXXXXXXXXXXXXXXXXXXXX',
+  assureidEndpoint: 'XXXXXXXXXXXXXXXXXXXXXXXXX'
 };
 
 // optional, the app has default legends and colors
@@ -47,7 +47,7 @@ const CUSTOMIZATION = {
         tapToCapture: "TOCA LA PANTALLA PARA CAPTURAR",
       },
       manualCapture: {
-        instruction: "Captura el reverso de tu identificación",
+        instruction: "Captura el frente de tu identificación",
         buttonNext: "Continuar",
       },
     },
@@ -119,18 +119,12 @@ window.addEventListener("message", (message) => {
       // use the results as you see fit
       console.log(message.data.data);
       // show result example
+      
+      // save documentInstance, is very important set this parameter in configuration to back image
+      sessionStorage.setItem('documentInstance', message.data.data.documentInstance);
 
       // save image front
-      sessionStorage.setItem("idBack", message.data.data.id.image.data);
-
-      // set idetentificatioData
-      const identificationData = {
-        documentNumber: message.data.data.idData.ocr.documentNumber,
-        backNumber: message.data.data.idData.ocr.backNumber,
-        personalNumber: message.data.data.idData.ocr.personalNumber,
-        verificationNumber: message.data.data.idData.ocr.verificationNumber
-      }; 
-      sessionStorage.setItem('identificationData', JSON.stringify(identificationData));      
+      sessionStorage.setItem("idFront", message.data.data.id.image.data);
 
       const containerResult = document.getElementById("container-result");
       const containerIframe = document.getElementById("container-iframe-acuant");
@@ -151,8 +145,8 @@ function initIframe() {
   // get iframe
   const iframe = document.getElementById("fad-iframe-acuant");
   // url - https://devapiframe.firmaautografa.com/fad-iframe-acuant
-  const username = "lgeronimo@na-at.com.mx";
-  const password = "fc7dea3b23fe314687e1957699a4badf1f1e7af6754dbd8ff0ac37863a7feb58";
+  const username = "example@email.com";
+  const password = "password";
   const url = `https://devapiframe.firmaautografa.com/fad-iframe-acuant?user=${username}&pwd=${password}`;
   // set src to iframe
   iframe.src = url;
@@ -164,10 +158,11 @@ function initModule() {
     new ResponseEvent(EVENT_MODULE.INIT_MODULE, {
       credentials: CREDENTIALS,
       customization: CUSTOMIZATION,
-      side: 1, // 0 - front id, 1 - back id
-      idData: true, // true - ocr, false - without this data
-      idPhoto: true, // true - get imaghen face of id, false - without this data
+      side: 0, // 0 - front id, 1 - back id
+      idData: false, // true - ocr, false - without this data
+      idPhoto: false, // true - get imaghen face of id, false - without this data
       imageQuality: 0.5, // quality of image id, range 0 - 1
-      documentInstance: sessionStorage.getItem('documentInstance') // instance obtained in the front image
-    }), iframe.src);
+    }),
+    iframe.src
+  );
 }
