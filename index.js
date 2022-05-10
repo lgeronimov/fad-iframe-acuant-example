@@ -25,7 +25,7 @@ const CREDENTIALS = {
 const CONFIGURATION = {
   views: {
     instructions: true,
-    preview: false
+    preview: true
   },
   customization: {
     fadCustomization: {
@@ -100,7 +100,7 @@ const CONFIGURATION = {
     }
   },
   pathDependencies: {
-    imageDirectory: 'ASSETS_URL'
+    // imageDirectory: 'ASSETS_URL'
   }
 };
 
