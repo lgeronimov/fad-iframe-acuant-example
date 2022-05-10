@@ -13,12 +13,12 @@ const EVENT_MODULE = {
 
 // acuant credentials
 const CREDENTIALS = {
-  passiveUsername: 'Acuant_Admin_PROD@na-at.com.mx',
-  passivePassword: 'R3Z^gm^6C^YNM^vQ',
-  passiveSubscriptionId: '3d0a5941-4528-475c-a8ce-15e8f3bca0df',
-  acasEndpoint: 'https://us.acas.acuant.net',
-  livenessEndpoint: 'https://us.passlive.acuant.net',
-  assureidEndpoint: 'https://services.assureid.net'
+  passiveUsername: 'XXXXXXXXXXXXXXXXXXXXXXXXX',
+  passivePassword: 'XXXXXXXXXXXXXXXXXXXXXXXXX',
+  passiveSubscriptionId: 'XXXXXXXXXXXXXXXXXXXXXXXXX',
+  acasEndpoint: 'XXXXXXXXXXXXXXXXXXXXXXXXX',
+  livenessEndpoint: 'XXXXXXXXXXXXXXXXXXXXXXXXX',
+  assureidEndpoint: 'XXXXXXXXXXXXXXXXXXXXXXXXX'
 };
 
 // optional, the app has default legends and colors
@@ -145,8 +145,8 @@ function initIframe() {
   // get iframe
   const iframe = document.getElementById("fad-iframe-acuant");
   // url - https://devapiframe.firmaautografa.com/fad-iframe-acuant
-  const username = "lgeronimo@na-at.com.mx";
-  const password = "fc7dea3b23fe314687e1957699a4badf1f1e7af6754dbd8ff0ac37863a7feb58";
+  const username = "example@email.com";
+  const password = "password";
   const url = `https://devapiframe.firmaautografa.com/fad-iframe-acuant?user=${username}&pwd=${password}`;
   // set src to iframe
   iframe.src = url;
