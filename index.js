@@ -87,8 +87,7 @@ const CONFIGURATION = {
       legendsInstructions: {
         title: 'Identificación',
         subtitle: 'Captura tu identifcación',
-        buttonNext: 'Continuar',
-        instructions: 'Recuerda no hacer uso de lentes de sol, gorras u otros elementos que dificulten la identificación de tu rostro.'
+        buttonNext: 'Continuar'
       },
       legendsPreview: {
         title: 'Identificación',
@@ -208,7 +207,7 @@ function initModule() {
     new ResponseEvent(EVENT_MODULE.INIT_MODULE, {
       credentials: CREDENTIALS,
       configuration: CONFIGURATION,
-      side: 1, // 0 - front id, 1 - back id
+      side: 0, // 0 - front id, 1 - back id
       idData: true, // true - ocr, false - without this data
       idPhoto: true, // true - get imaghen face of id, false - without this data
       imageQuality: 0.5, // quality of image id, range 0 - 1
