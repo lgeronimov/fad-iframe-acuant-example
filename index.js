@@ -216,8 +216,8 @@ function initModule() {
       configuration: CONFIGURATION,
       side: 1, // 0 - front id, 1 - back id
       idData: true, // true - ocr, false - without this data
-      idPhoto: true, // true - get imaghen face of id, false - without this data
-      imageQuality: 0.5, // quality of image id, range 0 - 1
+      idPhoto: false, // true - get imaghen face of id, false - without this data
+      imageQuality: 1, // quality of image id, range 0 - 1
       documentInstance: sessionStorage.getItem('documentInstance') // instance obtained in the front image
     }), iframe.src);
 }
