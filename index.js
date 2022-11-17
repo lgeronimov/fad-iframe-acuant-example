@@ -1,3 +1,17 @@
+/**
+ * This is an usage example for capturing 
+ * front and back id.
+ * 
+ * NOTE 1:
+ * Note that this example only works when it is known a priori 
+ * that the document has front and back. If it is not known whether
+ * the ID has a reverse side, this implementation does not apply.
+ * 
+ * NOTE 2: 
+ * This is an example of how parameters should be sent to the iframe; 
+ * the developer using it is responsible for making the most optimal 
+ * implementation depending on the technology used.
+ */
 
 window.onload = function () {
   initIframe();
@@ -120,16 +134,19 @@ const ERROR_CODE = {
   DOMAIN_NOT_ALLOWED: -12,
 };
 
-let side = 0; //front
-let idData = false;
-let idPhoto = false;
-
+/**
+ * Module parameters for set the configuration, credentias and
+ * id properties.
+ * The initial configuration is for the id-front process; is 
+ * important to do not request idData if the documentInstance id 
+ * will be used in id-back process; otherwise an error will be thrown.
+ */
 let moduleParams = {
   credentials: CREDENTIALS,
   configuration: CONFIGURATION,
-  side, // 0 - front id, 1 - back id
-  idData, // true - ocr, false - without this data
-  idPhoto, // true - get imaghen face of id, false - without this data
+  side: 0, // 0 - front id, 1 - back id
+  idData: false, // true - ocr, false - without this data
+  idPhoto: false, // true - get imaghen face of id, false - without this data
   imageQuality: 1, // quality of image id, range 0 - 1
 }
 
@@ -187,14 +204,20 @@ window.addEventListener("message", (message) => {
       // save image front
 
       const result = new Result(message.data.data);
-      if(side===0){
+
+      // If side is 0, the next step is to process the back side of the id (1)
+      if(moduleParams.side===0){
+        // documentInstance will be use inside the back-id capture process.
         sessionStorage.setItem('documentInstance', message.data.data.documentInstance);
+        // Id front image in base64
+        // IMPORTANT: If you need the id-front image for a further process; storage
+        // the image in this step
         sessionStorage.setItem("idFront", message.data.data.id.image.data);
         initBackIdProcess();
-        // showResult(result);
       }
       else {
-        showResult(message.data.data);
+        // If side is 1, the front id and back id where processed
+        showResult(result);
       }
       
     }
@@ -233,11 +256,16 @@ function showResult(response){
   imageIdPhoto.src = response.idPhoto;
   codeResult.innerText = JSON.stringify(response.idData, null, 2) ;
 }
+/**
+ * Change the moduleParams configuration for
+ * the id-back process using the documentInstance id.
+ * IMPORTANT CHANGES FOR id-back PROCESS:
+ * - side = 1
+ * - idData = true
+ * - documentInstance = The documentInstance returned in the id-front process.
+ */
 function initBackIdProcess(){
   // front process
-  side = 1; //back
-  idData = true;
-  idPhoto = true;
   const iframe = document.getElementById("fad-iframe-acuant");
   moduleParams.documentInstance = sessionStorage.getItem('documentInstance');
   moduleParams.idData = true;
