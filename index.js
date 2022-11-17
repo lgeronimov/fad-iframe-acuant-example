@@ -1,3 +1,4 @@
+
 window.onload = function () {
   initIframe();
 };
@@ -119,6 +120,19 @@ const ERROR_CODE = {
   DOMAIN_NOT_ALLOWED: -12,
 };
 
+let side = 0; //front
+let idData = false;
+let idPhoto = false;
+
+let moduleParams = {
+  credentials: CREDENTIALS,
+  configuration: CONFIGURATION,
+  side, // 0 - front id, 1 - back id
+  idData, // true - ocr, false - without this data
+  idPhoto, // true - get imaghen face of id, false - without this data
+  imageQuality: 1, // quality of image id, range 0 - 1
+}
+
 class ResponseEvent {
   event;
   data;
@@ -170,17 +184,19 @@ window.addEventListener("message", (message) => {
       console.log(message.data.data);
       // show result example
       // save documentInstance, is very important set this parameter in configuration to back image
-      sessionStorage.setItem('documentInstance', message.data.data.documentInstance);
       // save image front
-      sessionStorage.setItem("idFront", message.data.data.id.image.data);
 
-      const containerResult = document.getElementById("container-result");
-      const containerIframe = document.getElementById("container-iframe-acuant");
-      const imageId = document.getElementById("image-id");;
-      containerIframe.style.display = "none";
-      containerResult.style.display = "flex";
       const result = new Result(message.data.data);
-      imageId.src = result.id.image.data;
+      if(side===0){
+        sessionStorage.setItem('documentInstance', message.data.data.documentInstance);
+        sessionStorage.setItem("idFront", message.data.data.id.image.data);
+        initBackIdProcess();
+        // showResult(result);
+      }
+      else {
+        showResult(message.data.data);
+      }
+      
     }
   } else return;
 });
@@ -197,13 +213,36 @@ function initIframe() {
 
 function initModule() {
   const iframe = document.getElementById("fad-iframe-acuant");
+  console.log(moduleParams)
   iframe.contentWindow.postMessage(
-    new ResponseEvent(EVENT_MODULE.INIT_MODULE, {
-      credentials: CREDENTIALS,
-      configuration: CONFIGURATION,
-      side: 0, // 0 - front id, 1 - back id
-      idData: false, // true - ocr, false - without this data
-      idPhoto: false, // true - get imaghen face of id, false - without this data
-      imageQuality: 1, // quality of image id, range 0 - 1
-    }), iframe.src);
+    new ResponseEvent(EVENT_MODULE.INIT_MODULE, moduleParams), iframe.src);
+}
+
+function showResult(response){
+  const containerResult = document.getElementById("container-result");
+  const containerIframe = document.getElementById("container-iframe-acuant");
+  const imageIdFront = document.getElementById("image-id-front");
+  const imageIdBack = document.getElementById("image-id-back");
+  const imageIdPhoto = document.getElementById("image-id-photo");
+  const codeResult = document.getElementById("code-result");
+  
+  containerIframe.style.display = "none";
+  containerResult.style.display = "flex";
+  imageIdFront.src = sessionStorage.getItem("idFront");
+  imageIdBack.src = response.id.image.data;
+  imageIdPhoto.src = response.idPhoto;
+  codeResult.innerText = JSON.stringify(response.idData, null, 2) ;
+}
+function initBackIdProcess(){
+  // front process
+  side = 1; //back
+  idData = true;
+  idPhoto = true;
+  const iframe = document.getElementById("fad-iframe-acuant");
+  moduleParams.documentInstance = sessionStorage.getItem('documentInstance');
+  moduleParams.idData = true;
+  moduleParams.idPhoto = true;
+  moduleParams.side = 1;
+  iframe.src = '';
+  setTimeout( () => initIframe(), 0);
 }
