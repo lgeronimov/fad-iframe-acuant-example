@@ -42,6 +42,7 @@ const CONFIGURATION = {
     instructions: true,
     preview: true
   },
+  sharpnessThreshold: 50,
   customization: {
     fadCustomization: {
       colors: {
