@@ -119,7 +119,9 @@ const CONFIGURATION = {
   },
  },
  pathDependencies: {
-  // imageDirectory: 'ASSETS_URL',
+	imagesInstructions: {
+		instruction: 'Custom image URL'
+	},
   images: {
    instructionFrontManualCaptureMobile: 'Custom image URL',
    // instructionBackManualCaptureMobile: 'Custom image URL',
