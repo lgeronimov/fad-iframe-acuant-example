@@ -163,6 +163,7 @@ class ResponseEvent {
 }
 
 class Result {
+ // check the values of glare and sharpness. if sharpness < 60 or glare < 90 consider as error
  id; // image of identification (image.data) and relevant information (sharpness, glare)
  idData; // ocr idData.ocr;
  idPhoto; // image of the face cutout
