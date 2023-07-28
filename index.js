@@ -18,6 +18,9 @@ const CONFIGURATION = {
   instructions: true,
   preview: true,
  },
+ imageResult: {
+  quality: 0.3,
+ },
  customization: {
   fadCustomization: {
    colors: {
@@ -134,14 +137,11 @@ async function initProcess() {
 
  try {
   const FAD_SDK = new FadSdk(tkn, options);
-  const side = 0; // 0 - front id, 1 - back id
   const idData = true; // true - ocr, false - without this data
   const idPhoto = true; // true - get imaghen face of id, false - without this data
-  const imageQuality = 0.5; // quality of image id, range 0 - 1
-  const documentInstance = null;
 
   // Returns the image of identification (id.image.data) and relevant information (sharpness, glare), documentInstance, idData and idPhoto
-  const acuantResponse = await FAD_SDK.startAcuant(CREDENTIALS, side, idData, idPhoto, imageQuality, documentInstance, CONFIGURATION);
+  const acuantResponse = await FAD_SDK.startAcuantBeta(CREDENTIALS, idData, idPhoto, CONFIGURATION);
   FAD_SDK.end();
 
   // PROCESS_COMPLETED
@@ -150,46 +150,37 @@ async function initProcess() {
   // use the results as you see fit
   // show result example
 
-  // save image front
-  sessionStorage.setItem('idFront', acuantResponse.id.image.data);
-
   const containerResult = document.getElementById('container-result');
-  const imageId = document.getElementById('image-id');
+  const imageIdFront = document.getElementById('image-id-front');
+  const imageIdBack = document.getElementById('image-id-back');
   const imageFace = document.getElementById('image-face');
   const ocr = document.getElementById('ocr');
 
   containerResult.style.display = 'flex';
-  imageId.src = acuantResponse.id.image.data;
+  imageIdFront.src = acuantResponse.id.front.image.data;
+
+	if(acuantResponse.id?.back?.image?.data) {
+		imageIdBack.src = acuantResponse.id.back.image.data;
+	} else {
+		imageIdBack.style.display = 'none';
+	}
   imageFace.src = acuantResponse.idPhoto;
   ocr.innerHTML = JSON.stringify(acuantResponse.idData.ocr);
  } catch (ex) {
   // PRROCESS_ERROR
   console.log(ex);
-  if (ex.code === FadSdk.Errors.Acuant.UNSUPPORTED_CAMERA) {
+  if (ex.code === FadSdk.Errors.AcuantBeta.UNSUPPORTED_CAMERA) {
    // do something
    alert('Cámara no soportada, intenta en otro dispositivo');
-  } else if (ex.code === FadSdk.Errors.Acuant.FAIL_INITIALIZATION) {
+  } else if (ex.code === FadSdk.Errors.AcuantBeta.FAIL_INITIALIZATION) {
    // restart component
-  } else if (ex.code === FadSdk.Errors.Acuant.FAIL_GET_OCR) {
-   // ** RESTART THE WHOLE PROCESS OF CAPTURING ID **
-   // If this error occurred when taking the back side of the id and a
-   // document instance was being used; then it is necessary to take the front
-   // side again and use the new document instance.
-  } else if (ex.code === FadSdk.Errors.Acuant.FAIL_GET_FACE_IMAGE) {
-   // ** RESTART THE WHOLE PROCESS OF CAPTURING ID **
-   // If this error occurred when taking the back side of the id and a
-   // document instance was being used; then it is necessary to take the front
-   // side again and use the new document instance.
-  } else if (ex.code === FadSdk.Errors.Acuant.FACE_IMAGE_URL_NOT_FOUND) {
-   // ** RESTART THE WHOLE PROCESS OF CAPTURING ID **
-   // If this error occurred when taking the back side of the id and a
-   // document instance was being used; then it is necessary to take the front
-   // side again and use the new document instance.
-  } else if (ex.code === FadSdk.Errors.Acuant.FACE_IMAGE_NOT_FOUND) {
-   // ** RESTART THE WHOLE PROCESS OF CAPTURING ID **
-   // If this error occurred when taking the back side of the id and a
-   // document instance was being used; then it is necessary to take the front
-   // side again and use the new document instance.
+  } else if (ex.code === FadSdk.Errors.AcuantBeta.FAIL_GET_OCR) {
+   // restart component
+  } else if (ex.code === FadSdk.Errors.AcuantBeta.FAIL_GET_FACE_IMAGE) {
+   // restart component
+  } else if (ex.code === FadSdk.Errors.AcuantBeta.FACE_IMAGE_URL_NOT_FOUND) {
+   // restart component
+  } else if (ex.code === FadSdk.Errors.AcuantBeta.FACE_IMAGE_NOT_FOUND) {
   } else {
    // restart component
    alert(JSON.stringify(ex));
