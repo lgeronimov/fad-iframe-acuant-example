@@ -49,13 +49,10 @@ window.onload = async () => {
 
  const FAD_SDK = new FadSdk(tkn, options);
  try {
-  const acuantResponse = await FAD_SDK.startAcuant(
+  const acuantResponse = await FAD_SDK.startAcuantBeta(
    credentials, // Acuant credentials
-   side, // Side of the ID to be capture (0 or 1)
    idData, // Indicates if the id data is required (Boolean)
    idPhoto, // Indicates if the id photo is required (Boolean)
-   imageQuality, // Quality for the ID images (0 to 1)
-   documentInstance, // Instance ID in case that you requires to match more than one ID image
    CONFIGURATION // Customizable configuration like colors or legends.
   );
 
